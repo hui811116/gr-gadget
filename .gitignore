@@ -30,3 +30,17 @@
 *.exe
 *.out
 *.app
+
+# temporary files
+*.swp
+*.orig
+
+# tags
+tag
+
+# others
+.vscode
+.DS_Store
+build/
+examples/*
+
