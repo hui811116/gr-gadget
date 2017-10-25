@@ -40,36 +40,29 @@ namespace gr {
     			PROU=2,
     			PWR=3
     	};
-    	payload_sink_impl(const std::string& filename, 
-    					  int sys, bool append,bool verb, 
-    					  float period):block("payload_sink",
+    	payload_sink_impl(const std::string& filename, int sys, bool append):block("payload_sink",
     		gr::io_signature::make(0,0,0),
     		gr::io_signature::make(0,0,0)),
     		d_pld_port(pmt::mp("msg_in"))
     	{
     		d_file = NULL;
-          	d_append = append;
-          	d_verb = verb;
-          	message_port_register_in(d_pld_port);
-          	set_msg_handler(d_pld_port,boost::bind(&payload_sink_impl::msg_in,this,_1));
-          	update_file(filename);
-          	switch(sys){
-            	case LSA:
-            	case SNS:
-            	case PROU:
-            	case PWR:
-              		d_sys = sys;
-            	break;
-            	default:
-              		throw std::runtime_error("Undefined system");
-            	break;
-          	}
-          	d_acc_pkt =0;
-          	d_start_time = boost::posix_time::second_clock::local_time();
-          	if(period<=0){
-          		period = 5000;
-          	}
-          	d_verb_period = period;
+        d_append = append;
+        message_port_register_in(d_pld_port);
+        set_msg_handler(d_pld_port,boost::bind(&payload_sink_impl::msg_in,this,_1));
+        update_file(filename);
+        switch(sys){
+         	case LSA:
+         	case SNS:
+         	case PROU:
+         	case PWR:
+           		d_sys = sys;
+         	break;
+         	default:
+           		throw std::runtime_error("Undefined system");
+         	break;
+        }
+        d_acc_pkt =0;
+        d_start_time = boost::posix_time::second_clock::local_time();
     	}
     	~payload_sink_impl(){
     		if(d_file->is_open()){
@@ -78,55 +71,33 @@ namespace gr {
           	delete d_file;
     	}
     	void update_file(const std::string& filename)
-        {
-          gr::thread::scoped_lock guard(d_mutex);
-          if(d_file!=NULL && d_file->is_open()){
-            d_file->close();
-            delete d_file;
-          }
-          if(d_append){
-            d_file = new std::fstream(filename.c_str(),std::fstream::out|std::fstream::app);
-          }else{
-            d_file = new std::fstream(filename.c_str(),std::fstream::out|std::fstream::trunc);
-          }
-          if(!d_file->is_open()){
-            throw std::runtime_error("<FILE SINK>cannot open file...file exist or cannot be opened");
-          }
-          // record the time when file started!
-          boost::posix_time::ptime current_time = boost::posix_time::second_clock::local_time();
-          *d_file <<"\n[Event]\n<Time>\n"<< boost::posix_time::to_iso_string(current_time)
-          <<"<Bytes>\n"<<std::dec<<0<<"\n<Packets>\n"<<0<<"\n[Event*]"<<std::endl;
+      {
+        gr::thread::scoped_lock guard(d_mutex);
+        if(d_file!=NULL && d_file->is_open()){
+          d_file->close();
+          delete d_file;
         }
-        bool start()
-        {
-          d_finished = false;
-          d_thread = boost::shared_ptr<gr::thread::thread>
-          (new gr::thread::thread(boost::bind(&payload_sink_impl::run,this)));
-          return block::start();
+        if(d_append){
+          d_file = new std::fstream(filename.c_str(),std::fstream::out|std::fstream::app);
+        }else{
+          d_file = new std::fstream(filename.c_str(),std::fstream::out|std::fstream::trunc);
         }
-        bool stop()
-        {
-          d_finished = true;
-          d_thread->interrupt();
-          d_thread->join();
-          return block::stop();
+        if(!d_file->is_open()){
+          throw std::runtime_error("<FILE SINK>cannot open file...file exist or cannot be opened");
         }
+        // record the time when file started!
+        boost::posix_time::ptime current_time = boost::posix_time::second_clock::local_time();
+        *d_file <<"\n[Event]\n<Time>\n"<< boost::posix_time::to_iso_string(current_time)
+        <<"<Bytes>\n"<<std::dec<<0<<"\n<Packets>\n"<<0<<"\n[Event*]"<<std::endl;
+      }
+      int acc_packets() const
+      {
+        int acc = (int) d_acc_pkt;
+        return acc;
+      }
+      
     private:
-    	void run()
-        {
-          while(!d_finished){
-            boost::this_thread::sleep(boost::posix_time::milliseconds(d_verb_period));
-            if(d_finished){
-              return;
-            }
-            boost::posix_time::time_duration diff = boost::posix_time::second_clock::local_time() - d_start_time;
-            if(d_verb){
-              std::printf("<Message File Sink> Accumulated results:%d, elapsed time:%d\n",d_acc_pkt,diff.total_seconds());
-              std::fflush(stdout);
-            }
-          }
-        }
-        void msg_in(pmt::pmt_t msg)
+    	  void msg_in(pmt::pmt_t msg)
         {
           gr::thread::scoped_lock guard(d_mutex);
           // seq number can be stored here
@@ -190,21 +161,18 @@ namespace gr {
           d_acc_pkt++;
         }
     	const pmt::pmt_t d_pld_port;
-    	boost::shared_ptr<gr::thread::thread> d_thread;
-    	bool d_finished;
     	gr::thread::mutex d_mutex;
     	std::fstream* d_file;
     	boost::posix_time::ptime d_start_time;
     	int d_sys;
-        unsigned int d_acc_pkt;
-        bool d_append;
-        bool d_verb;
-        float d_verb_period;
+      unsigned int d_acc_pkt;
+      bool d_append;
     };
+
     payload_sink::sptr
-    payload_sink::make(const std::string& filename, int sys, bool append,bool verb, float period)
+    payload_sink::make(const std::string& filename, int sys, bool append)
     {
-    	return gnuradio::get_initial_sptr(new payload_sink_impl(filename,sys,append,verb,period));
+    	return gnuradio::get_initial_sptr(new payload_sink_impl(filename,sys,append));
     }
 
   } /* namespace gadget */

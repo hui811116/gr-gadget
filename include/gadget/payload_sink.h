@@ -29,15 +29,17 @@ namespace gr {
   namespace gadget {
 
     /*!
-     * \brief <+description+>
-     *
+     * \brief <available functions>
+     * int accumulated_packets(): return the number of packets written to a file
      */
     class GADGET_API payload_sink : virtual public block
     {
     public:
       typedef boost::shared_ptr<payload_sink> sptr;
-      static sptr make(const std::string& filename, int sys, bool append,bool verb, float period);
-    
+      static sptr make(const std::string& filename, int sys, bool append);
+
+      virtual int acc_packets() const =0;
+      
     };
 
   } // namespace gadget

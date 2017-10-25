@@ -4,7 +4,7 @@
   <key>gadget_payload_sink</key>
   <category>[gadget]</category>
   <import>import gadget</import>
-  <make>gadget.payload_sink($filename,$system,$app,$verbose,$period)</make>
+  <make>gadget.payload_sink($filename,$system,$app)</make>
   <callback>update_file($filename)</callback>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
@@ -48,26 +48,6 @@
       <name>No</name>
       <key>False</key>
     </option>
-  </param>
-  <param>
-    <name>Verbose</name>
-    <key>verbose</key>
-    <value>False</value>
-    <type>bool</type>
-    <option>
-      <name>Yes</name>
-      <key>True</key>
-    </option>
-    <option>
-      <name>No</name>
-      <key>False</key>
-    </option>
-  </param>
-  <param>
-    <name>Report Period(ms)</name>
-    <key>period</key>
-    <value>5000</value>
-    <type>float</type>
   </param>
 
   <sink>
