@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<block>
+  <name>Payload Sink</name>
+  <key>gadget_payload_sink</key>
+  <category>[gadget]</category>
+  <import>import gadget</import>
+  <make>gadget.payload_sink($filename,$system,$app,$verbose,$period)</make>
+  <callback>update_file($filename)</callback>
+  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
+       Sub-nodes:
+       * name
+       * key (makes the value accessible as $keyname, e.g. in the make node)
+       * type -->
+  <param>
+    <name>File</name>
+    <key>filename</key>
+    <value></value>
+    <type>file_save</type>
+  </param>
+  <param>
+    <name>System</name>
+    <key>system</key>
+    <value>0</value>
+    <type>int</type>
+    <option>
+      <name>LSA</name>
+      <key>0</key>
+    </option>
+    <option>
+      <name>SNS</name>
+      <key>1</key>
+    </option>
+    <option>
+      <name>ProU</name>
+      <key>2</key>
+    </option>
+  </param>
+  <param>
+    <name>Append</name>
+    <key>app</key>
+    <value>False</value>
+    <type>bool</type>
+    <option>
+      <name>Yes</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>No</name>
+      <key>False</key>
+    </option>
+  </param>
+  <param>
+    <name>Verbose</name>
+    <key>verbose</key>
+    <value>False</value>
+    <type>bool</type>
+    <option>
+      <name>Yes</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>No</name>
+      <key>False</key>
+    </option>
+  </param>
+  <param>
+    <name>Report Period(ms)</name>
+    <key>period</key>
+    <value>5000</value>
+    <type>float</type>
+  </param>
+
+  <sink>
+    <name>msg_in</name>
+    <type>message</type>
+  </sink>
+</block>

@@ -46,12 +46,26 @@ set(VERSION_INFO_API_COMPAT    0)
 set(VERSION_INFO_MINOR_VERSION 0)
 set(VERSION_INFO_MAINT_VERSION git)
 
+# Supress cmake warnings
+if(POLICY CMP0026)
+    cmake_policy(SET CMP0026 OLD)
+endif()
+if(POLICY CMP0043)
+    cmake_policy(SET CMP0043 OLD)
+endif()
+if(POLICY CMP0045)
+    cmake_policy(SET CMP0045 OLD)
+endif()
+if(POLICY CMP0046)
+    cmake_policy(SET CMP0046 OLD)
+endif()
 ########################################################################
 # Compiler specific setup
 ########################################################################
 if(CMAKE_COMPILER_IS_GNUCXX AND NOT WIN32)
     #http://gcc.gnu.org/wiki/Visibility
     add_definitions(-fvisibility=hidden)
+    add_definitions(-std=c++11)
 endif()
 
 ########################################################################
@@ -69,7 +83,7 @@ set(Boost_ADDITIONAL_VERSIONS
     "1.60.0" "1.60" "1.61.0" "1.61" "1.62.0" "1.62" "1.63.0" "1.63" "1.64.0" "1.64"
     "1.65.0" "1.65" "1.66.0" "1.66" "1.67.0" "1.67" "1.68.0" "1.68" "1.69.0" "1.69"
 )
-find_package(Boost "1.35" COMPONENTS filesystem system)
+find_package(Boost "1.35" COMPONENTS thread filesystem system)
 
 if(NOT Boost_FOUND)
     message(FATAL_ERROR "Boost required to compile gadget")
@@ -117,18 +131,22 @@ endif(APPLE)
 ########################################################################
 find_package(CppUnit)
 find_package(Doxygen)
+find_package(Volk)
 
 # Search for GNU Radio and its components and versions. Add any
 # components required to the list of GR_REQUIRED_COMPONENTS (in all
 # caps such as FILTER or FFT) and change the version to the minimum
 # API compatible version required.
-set(GR_REQUIRED_COMPONENTS RUNTIME)
+set(GR_REQUIRED_COMPONENTS RUNTIME PMT)
 find_package(Gnuradio "3.7.2" REQUIRED)
 list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_SOURCE_DIR}/cmake/Modules)
 include(GrVersion)
 
 if(NOT CPPUNIT_FOUND)
     message(FATAL_ERROR "CppUnit required to compile gadget")
+endif()
+if(NOT VOLK_FOUND)
+    message(FATAL_ERROR "Volk required to compile gadget")
 endif()
 
 ########################################################################
@@ -151,12 +169,14 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${CPPUNIT_INCLUDE_DIRS}
     ${GNURADIO_ALL_INCLUDE_DIRS}
+    ${VOLK_INCLUDE_DIRS}
 )
 
 link_directories(
     ${Boost_LIBRARY_DIRS}
     ${CPPUNIT_LIBRARY_DIRS}
     ${GNURADIO_RUNTIME_LIBRARY_DIRS}
+    ${VOLK_LIBRARY_DIRS}
 )
 
 # Set component parameters

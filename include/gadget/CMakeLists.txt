@@ -22,5 +22,6 @@
 ########################################################################
 install(FILES
     api.h
+    payload_sink.h
     DESTINATION include/gadget
 )
