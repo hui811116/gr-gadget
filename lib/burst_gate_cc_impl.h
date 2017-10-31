@@ -32,6 +32,7 @@ namespace gr {
       int d_mult;
       pmt::pmt_t d_tag;
       int d_count;
+      bool d_state;
       const pmt::pmt_t d_sob;
       const pmt::pmt_t d_eob;
       const pmt::pmt_t d_name;

@@ -54,6 +54,7 @@ namespace gr {
         throw std::invalid_argument("tag name should be specified");
       }
       d_tag = pmt::intern(tagname);
+      d_state = false;
     }
 
     /*
@@ -65,12 +66,16 @@ namespace gr {
     void
     burst_gate_cc_impl::add_sob(int offset)
     {
-      add_item_tag(0,nitems_written(0)+offset,d_sob,pmt::PMT_T,d_name);
+      if(!d_state){
+        d_state = true;
+        add_item_tag(0,nitems_written(0)+offset,d_sob,pmt::PMT_T,d_name);
+      }
     }
     void
     burst_gate_cc_impl::add_eob(int offset)
     {
       add_item_tag(0,nitems_written(0)+offset-1,d_eob,pmt::PMT_T,d_name);
+      d_state = false;
     }
     void
     burst_gate_cc_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
