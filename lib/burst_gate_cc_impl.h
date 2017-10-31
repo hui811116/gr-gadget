@@ -18,31 +18,41 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#ifndef INCLUDED_GADGET_BURST_GATE_CC_IMPL_H
+#define INCLUDED_GADGET_BURST_GATE_CC_IMPL_H
 
-#ifndef INCLUDED_GADGET_PAYLOAD_SINK_H
-#define INCLUDED_GADGET_PAYLOAD_SINK_H
-
-#include <gadget/api.h>
-#include <gnuradio/block.h>
+#include <gadget/burst_gate_cc.h>
 
 namespace gr {
   namespace gadget {
 
-    /*!
-     * \brief  int accumulated_packets(): return the number of packets written to a file
-     */
-    class GADGET_API payload_sink : virtual public block
+    class burst_gate_cc_impl : public burst_gate_cc
     {
-    public:
-      typedef boost::shared_ptr<payload_sink> sptr;
-      static sptr make(const std::string& filename, int sys, bool append);
+     private:
+      int d_mult;
+      pmt::pmt_t d_tag;
+      int d_count;
+      const pmt::pmt_t d_sob;
+      const pmt::pmt_t d_eob;
+      const pmt::pmt_t d_name;
+      void add_sob(int offset);
+      void add_eob(int offset);
 
-      virtual int acc_packets() const =0;
-      
+     public:
+      burst_gate_cc_impl(const std::string& tagname, int mult);
+      ~burst_gate_cc_impl();
+
+      // Where all the action really happens
+      void forecast (int noutput_items, gr_vector_int &ninput_items_required);
+
+      int general_work(int noutput_items,
+           gr_vector_int &ninput_items,
+           gr_vector_const_void_star &input_items,
+           gr_vector_void_star &output_items);
     };
 
   } // namespace gadget
 } // namespace gr
 
-#endif /* INCLUDED_GADGET_PAYLOAD_SINK_H */
+#endif /* INCLUDED_GADGET_BURST_GATE_CC_IMPL_H */
 

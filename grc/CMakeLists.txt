@@ -18,5 +18,5 @@
 # Boston, MA 02110-1301, USA.
 install(FILES
     gadget_payload_sink.xml
-    DESTINATION share/gnuradio/grc/blocks
+    gadget_burst_gate_cc.xml DESTINATION share/gnuradio/grc/blocks
 )

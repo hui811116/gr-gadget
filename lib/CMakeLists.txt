@@ -26,7 +26,7 @@ include_directories(${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIRS})
 list(APPEND gadget_sources
     payload_sink.cc
-    )
+    burst_gate_cc_impl.cc )
 
 set(gadget_sources "${gadget_sources}" PARENT_SCOPE)
 if(NOT gadget_sources)

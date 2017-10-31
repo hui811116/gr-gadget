@@ -19,8 +19,8 @@
  */
 
 
-#ifndef INCLUDED_GADGET_PAYLOAD_SINK_H
-#define INCLUDED_GADGET_PAYLOAD_SINK_H
+#ifndef INCLUDED_GADGET_BURST_GATE_CC_H
+#define INCLUDED_GADGET_BURST_GATE_CC_H
 
 #include <gadget/api.h>
 #include <gnuradio/block.h>
@@ -29,20 +29,28 @@ namespace gr {
   namespace gadget {
 
     /*!
-     * \brief  int accumulated_packets(): return the number of packets written to a file
+     * \brief <+description of block+>
+     * \ingroup gadget
+     *
      */
-    class GADGET_API payload_sink : virtual public block
+    class GADGET_API burst_gate_cc : virtual public gr::block
     {
-    public:
-      typedef boost::shared_ptr<payload_sink> sptr;
-      static sptr make(const std::string& filename, int sys, bool append);
+     public:
+      typedef boost::shared_ptr<burst_gate_cc> sptr;
 
-      virtual int acc_packets() const =0;
-      
+      /*!
+       * \brief Return a shared_ptr to a new instance of gadget::burst_gate_cc.
+       *
+       * To avoid accidental use of raw pointers, gadget::burst_gate_cc's
+       * constructor is in a private implementation
+       * class. gadget::burst_gate_cc::make is the public interface for
+       * creating new instances.
+       */
+      static sptr make(const std::string& tagname, int mult);
     };
 
   } // namespace gadget
 } // namespace gr
 
-#endif /* INCLUDED_GADGET_PAYLOAD_SINK_H */
+#endif /* INCLUDED_GADGET_BURST_GATE_CC_H */
 
