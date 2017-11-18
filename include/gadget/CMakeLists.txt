@@ -23,5 +23,6 @@
 install(FILES
     api.h
     payload_sink.h
-    burst_gate_cc.h DESTINATION include/gadget
+    burst_gate_cc.h
+    periodic_sender.h DESTINATION include/gadget
 )

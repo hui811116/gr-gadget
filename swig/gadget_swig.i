@@ -10,11 +10,13 @@
 %{
 #include "gadget/payload_sink.h"
 #include "gadget/burst_gate_cc.h"
+#include "gadget/periodic_sender.h"
 %}
 
 
 %include "gadget/payload_sink.h"
 GR_SWIG_BLOCK_MAGIC2(gadget, payload_sink);
-
 %include "gadget/burst_gate_cc.h"
 GR_SWIG_BLOCK_MAGIC2(gadget, burst_gate_cc);
+%include "gadget/periodic_sender.h"
+GR_SWIG_BLOCK_MAGIC2(gadget, periodic_sender);

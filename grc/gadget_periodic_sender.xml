@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<block>
+  <name>Periodic Sender</name>
+  <key>gadget_periodic_sender</key>
+  <category>[gadget]</category>
+  <import>import gadget</import>
+  <make>gadget.periodic_sender($period,$filename,$nsend)</make>
+  <callback>reset($trigger)</callback>
+  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
+       Sub-nodes:
+       * name
+       * key (makes the value accessible as $keyname, e.g. in the make node)
+       * type -->
+  <param>
+    <name>Period(ms)</name>
+    <key>period</key>
+    <value>1000</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>File</name>
+    <key>filename</key>
+    <value></value>
+    <type>file_open</type>
+  </param>
+  <param>
+    <name>Packets to Send</name>
+    <key>nsend</key>
+    <value>100</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Reset</name>
+    <key>trigger</key>
+    <value>False</value>
+    <type>bool</type>
+  </param>
+
+  <!-- Make one 'sink' node per input. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <sink>
+    <name>fb_in</name>
+    <type>message</type>
+    <optional>1</optional>
+  </sink>
+
+  <!-- Make one 'source' node per output. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <source>
+    <name>pdu_out</name>
+    <type>message</type>
+  </source>
+</block>
