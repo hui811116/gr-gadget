@@ -29,6 +29,8 @@
 
 namespace gr {
   namespace gadget {
+    #define d_debug 0
+    #define dout d_debug && std::cout
   	#define SEQLEN 4
   	#define MAXLEN 123
     class periodic_sender_impl : public periodic_sender
@@ -60,6 +62,10 @@ namespace gr {
     		}
     		d_nsend = nsend;
     		d_update = false;
+            if(period_ms<=0){
+                throw std::invalid_argument("Period should be positive");
+            }
+            d_period = period_ms;
     	}
     	~periodic_sender_impl(){}
     	void msg_in(pmt::pmt_t msg)
@@ -67,9 +73,11 @@ namespace gr {
     		pmt::pmt_t k = pmt::car(msg);
     		pmt::pmt_t v = pmt::cdr(msg);
     	}
-    	void reset(bool trigger)
+    	void reset(int trigger)
     	{
+            gr::thread::scoped_lock guard(d_mutex);
     		if(trigger && !d_update){
+                //dout<<"calling reset, update changed"<<std::endl;
     			d_update = true;
     			d_send_all.notify_one();
     		}
@@ -85,13 +93,13 @@ namespace gr {
     	{
     		d_finished = true;
     		d_thread->interrupt();
+            d_send_all.notify_one();
     		d_thread->join();
     		return block::stop();
     	}
     private:
     	void generate_pkt()
     	{
-    		gr::thread::scoped_lock guard(d_mutex);
     		const uint8_t* u8_seq = (const uint8_t*) &d_seqno;
           	d_buf[0] = u8_seq[1];
           	d_buf[1] = u8_seq[0];

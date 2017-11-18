@@ -37,7 +37,7 @@ namespace gr {
     public:
       typedef boost::shared_ptr<periodic_sender> sptr;
       static sptr make(float period_ms, const std::string& filename, int nsend);
-      virtual void reset(bool trigger)=0;
+      virtual void reset(int trigger)=0;
     };
 
   } // namespace gadget

@@ -32,8 +32,8 @@
   <param>
     <name>Reset</name>
     <key>trigger</key>
-    <value>False</value>
-    <type>bool</type>
+    <value>0</value>
+    <type>int</type>
   </param>
 
   <!-- Make one 'sink' node per input. Sub-nodes:
