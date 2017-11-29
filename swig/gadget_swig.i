@@ -11,6 +11,7 @@
 #include "gadget/payload_sink.h"
 #include "gadget/burst_gate_cc.h"
 #include "gadget/periodic_sender.h"
+#include "gadget/packet_monitor.h"
 %}
 
 
@@ -20,3 +21,5 @@ GR_SWIG_BLOCK_MAGIC2(gadget, payload_sink);
 GR_SWIG_BLOCK_MAGIC2(gadget, burst_gate_cc);
 %include "gadget/periodic_sender.h"
 GR_SWIG_BLOCK_MAGIC2(gadget, periodic_sender);
+%include "gadget/packet_monitor.h"
+GR_SWIG_BLOCK_MAGIC2(gadget, packet_monitor);

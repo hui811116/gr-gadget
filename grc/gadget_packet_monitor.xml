@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<block>
+  <name>Packet Monitor</name>
+  <key>gadget_packet_monitor</key>
+  <category>[gadget]</category>
+  <import>import gadget</import>
+  <make>gadget.packet_monitor()</make>
+  <callback>call_reset($call)</callback>
+  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
+       Sub-nodes:
+       * name
+       * key (makes the value accessible as $keyname, e.g. in the make node)
+       * type -->
+  
+  <param>
+    <name>Reset</name>
+    <key>call</key>
+    <value>False</value>
+    <type>bool</type>
+  </param>
+  
+  <!-- Make one 'sink' node per input. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <sink>
+    <name>send_in</name>
+    <type>message</type>
+    <optional>1</optional>
+  </sink>
+  <sink>
+    <name>rx_in</name>
+    <type>message</type>
+    <optional>1</optional>
+  </sink>
+
+  <!-- Make one 'source' node per output. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+
+</block>

@@ -27,7 +27,8 @@ link_directories(${Boost_LIBRARY_DIRS})
 list(APPEND gadget_sources
     payload_sink.cc
     burst_gate_cc_impl.cc
-    periodic_sender.cc )
+    periodic_sender.cc
+    packet_monitor.cc )
 
 set(gadget_sources "${gadget_sources}" PARENT_SCOPE)
 if(NOT gadget_sources)

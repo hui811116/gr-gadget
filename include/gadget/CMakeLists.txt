@@ -24,5 +24,6 @@ install(FILES
     api.h
     payload_sink.h
     burst_gate_cc.h
-    periodic_sender.h DESTINATION include/gadget
+    periodic_sender.h
+    packet_monitor.h DESTINATION include/gadget
 )
