@@ -20,5 +20,6 @@ install(FILES
     gadget_payload_sink.xml
     gadget_burst_gate_cc.xml
     gadget_periodic_sender.xml
-    gadget_packet_monitor.xml DESTINATION share/gnuradio/grc/blocks
+    gadget_packet_monitor.xml
+    gadget_burst_tagger_cc.xml DESTINATION share/gnuradio/grc/blocks
 )
