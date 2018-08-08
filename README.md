@@ -1,6 +1,6 @@
 # gr-gadget
 
-Some tools that are useful in either gnuradio simulation or USRP experiment
+Some tools that are useful in both gnuradio simulation and USRP experiment
 
 # Installation
 
