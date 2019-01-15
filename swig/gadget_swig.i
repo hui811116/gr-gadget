@@ -13,6 +13,7 @@
 #include "gadget/periodic_sender.h"
 #include "gadget/packet_monitor.h"
 #include "gadget/burst_tagger_cc.h"
+#include "gadget/null_msg_sink.h"
 %}
 
 
@@ -26,3 +27,5 @@ GR_SWIG_BLOCK_MAGIC2(gadget, periodic_sender);
 GR_SWIG_BLOCK_MAGIC2(gadget, packet_monitor);
 %include "gadget/burst_tagger_cc.h"
 GR_SWIG_BLOCK_MAGIC2(gadget, burst_tagger_cc);
+%include "gadget/null_msg_sink.h"
+GR_SWIG_BLOCK_MAGIC2(gadget, null_msg_sink);

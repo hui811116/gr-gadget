@@ -26,5 +26,6 @@ install(FILES
     burst_gate_cc.h
     periodic_sender.h
     packet_monitor.h
-    burst_tagger_cc.h DESTINATION include/gadget
+    burst_tagger_cc.h
+    null_msg_sink.h DESTINATION include/gadget
 )

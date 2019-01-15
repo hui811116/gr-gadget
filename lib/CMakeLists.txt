@@ -29,7 +29,8 @@ list(APPEND gadget_sources
     burst_gate_cc_impl.cc
     periodic_sender.cc
     packet_monitor.cc
-    burst_tagger_cc_impl.cc )
+    burst_tagger_cc_impl.cc
+    null_msg_sink.cc )
 
 set(gadget_sources "${gadget_sources}" PARENT_SCOPE)
 if(NOT gadget_sources)
